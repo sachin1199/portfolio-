@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sachin Singh — Full-Stack Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0E0F11;
+    --bg-raised: #15161A;
+    --ink: #EDEAE3;
+    --ink-dim: #8B8D92;
+    --ink-faint: #5C5E63;
+    --accent: #C9A24B;
+    --accent-dim: #8A7038;
+    --line: #2A2B2E;
+    --line-soft: #1D1E22;
+    --maxw: 1100px;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  ::selection{background:var(--accent);color:var(--bg);}
+
+  h1,h2,h3{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:600;
+    letter-spacing:-0.02em;
+  }
+
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;text-decoration:none;}
+
+  :focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:3px;
+  }
+
+  .wrap{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:100;
+    backdrop-filter:blur(10px);
+    background:rgba(14,15,17,0.75);
+    border-bottom:1px solid var(--line-soft);
+  }
+  nav .wrap{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    height:64px;
+  }
+  .nav-mark{
+    font-family:'JetBrains Mono',monospace;
+    font-size:14px;
+    color:var(--accent);
+    letter-spacing:0.02em;
+  }
+  .nav-links{
+    display:flex;
+    gap:36px;
+    font-size:14px;
+    color:var(--ink-dim);
+  }
+  .nav-links a{transition:color .2s ease;}
+  .nav-links a:hover{color:var(--ink);}
+  .nav-cta{
+    font-size:13px;
+    font-family:'JetBrains Mono',monospace;
+    color:var(--ink);
+    border:1px solid var(--line);
+    padding:8px 16px;
+    border-radius:2px;
+    transition:border-color .2s ease, color .2s ease;
+  }
+  .nav-cta:hover{border-color:var(--accent);color:var(--accent);}
+  @media (max-width:720px){ .nav-links{display:none;} }
+
+  /* ---------- HERO ---------- */
+  header.hero{
+    min-height:100svh;
+    display:flex;
+    align-items:center;
+    position:relative;
+    padding-top:64px;
+  }
+
+  .hero-grid-bg{
+    position:absolute;
+    inset:0;
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size:64px 64px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 60% 35%, black 0%, transparent 70%);
+    mask-image: radial-gradient(ellipse 70% 60% at 60% 35%, black 0%, transparent 70%);
+    opacity:0.6;
+    pointer-events:none;
+  }
+
+  .hero-content{
+    position:relative;
+    z-index:2;
+    max-width:760px;
+  }
+
+  .hero-eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    color:var(--accent);
+    margin-bottom:24px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    opacity:0;
+    animation:fadeUp .7s ease forwards;
+  }
+  .hero-eyebrow::before{
+    content:"";
+    width:7px;height:7px;
+    background:var(--accent);
+    border-radius:50%;
+    display:inline-block;
+  }
+
+  .hero h1{
+    font-size:clamp(2.4rem, 5.4vw, 4.2rem);
+    line-height:1.05;
+    margin-bottom:24px;
+    opacity:0;
+    animation:fadeUp .7s ease .1s forwards;
+  }
+  .hero h1 .accent-text{color:var(--accent);}
+
+  .hero p.lead{
+    font-size:18px;
+    color:var(--ink-dim);
+    max-width:560px;
+    margin-bottom:40px;
+    opacity:0;
+    animation:fadeUp .7s ease .2s forwards;
+  }
+
+  .hero-actions{
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+    opacity:0;
+    animation:fadeUp .7s ease .3s forwards;
+  }
+
+  .btn-primary{
+    background:var(--accent);
+    color:var(--bg);
+    font-weight:600;
+    font-size:14px;
+    padding:14px 28px;
+    border-radius:2px;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .btn-primary:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 24px -8px rgba(201,162,75,0.5);
+  }
+
+  .btn-secondary{
+    border:1px solid var(--line);
+    color:var(--ink);
+    font-size:14px;
+    padding:14px 28px;
+    border-radius:2px;
+    transition:border-color .2s ease;
+  }
+  .btn-secondary:hover{border-color:var(--ink-dim);}
+
+  @keyframes fadeUp{
+    from{opacity:0; transform:translateY(14px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  .hero-coords{
+    position:absolute;
+    right:32px;
+    bottom:48px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--ink-faint);
+    text-align:right;
+    line-height:1.8;
+    z-index:2;
+  }
+  @media (max-width:720px){ .hero-coords{display:none;} }
+
+  /* ---------- SECTION LABEL ---------- */
+  .section-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    color:var(--accent);
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:16px;
+  }
+  .section-label::after{
+    content:"";
+    height:1px;
+    background:var(--line);
+    flex:1;
+  }
+
+  section{
+    padding:120px 0;
+    border-top:1px solid var(--line-soft);
+  }
+
+  .section-head{
+    margin-bottom:64px;
+    max-width:620px;
+  }
+  .section-head h2{
+    font-size:clamp(1.8rem, 3vw, 2.4rem);
+    margin-bottom:16px;
+  }
+  .section-head p{
+    color:var(--ink-dim);
+    font-size:16px;
+  }
+
+  /* ---------- PROJECTS ---------- */
+  .project-card{
+    border:1px solid var(--line);
+    border-radius:4px;
+    background:var(--bg-raised);
+    margin-bottom:24px;
+    overflow:hidden;
+    transition:border-color .25s ease;
+  }
+  .project-card:hover{border-color:var(--accent-dim);}
+
+  .project-card.featured{
+    display:grid;
+    grid-template-columns:1.1fr 1fr;
+  }
+  @media (max-width:860px){ .project-card.featured{grid-template-columns:1fr;} }
+
+  .project-visual{
+    background:linear-gradient(135deg, #15161A 0%, #1A1B20 100%);
+    border-right:1px solid var(--line);
+    padding:40px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    position:relative;
+    min-height:280px;
+  }
+  @media (max-width:860px){
+    .project-visual{border-right:none; border-bottom:1px solid var(--line);}
+  }
+
+  .chess-board-mini{
+    display:grid;
+    grid-template-columns:repeat(8,1fr);
+    width:100%;
+    max-width:220px;
+    aspect-ratio:1;
+    border:1px solid var(--line);
+    border-radius:2px;
+    overflow:hidden;
+  }
+  .chess-board-mini div.light{background:#1D1E22;}
+  .chess-board-mini div.dark{background:#101114;}
+
+  .project-body{padding:40px;}
+
+  .project-tag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--accent);
+    margin-bottom:12px;
+    display:block;
+  }
+
+  .project-body h3{font-size:24px;margin-bottom:14px;}
+  .project-body .desc{color:var(--ink-dim);font-size:15px;margin-bottom:20px;}
+
+  .project-meta{margin-bottom:24px;}
+  .project-meta-row{
+    display:flex;
+    gap:8px;
+    margin-bottom:10px;
+    font-size:14px;
+  }
+  .project-meta-row .k{
+    font-family:'JetBrains Mono',monospace;
+    color:var(--ink-faint);
+    min-width:90px;
+    flex-shrink:0;
+  }
+  .project-meta-row .v{color:var(--ink-dim);}
+
+  .stack-pills{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:28px;
+  }
+  .stack-pill{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--ink-dim);
+    border:1px solid var(--line);
+    padding:5px 11px;
+    border-radius:20px;
+  }
+
+  .project-links{display:flex;gap:14px;flex-wrap:wrap;}
+  .project-link{
+    font-size:14px;
+    font-weight:500;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:10px 18px;
+    border:1px solid var(--line);
+    border-radius:2px;
+    transition:border-color .2s ease, color .2s ease;
+  }
+  .project-link.primary{
+    background:var(--accent);
+    color:var(--bg);
+    border-color:var(--accent);
+    font-weight:600;
+  }
+  .project-link.primary:hover{opacity:0.88;}
+  .project-link:not(.primary):hover{border-color:var(--ink-dim);}
+  .project-link.pending{opacity:0.55;cursor:default;}
+
+  .project-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+  }
+  @media (max-width:720px){ .project-grid{grid-template-columns:1fr;} }
+
+  .project-card.small{padding:32px;}
+  .project-card.small h3{font-size:19px;margin-bottom:10px;}
+  .project-card.small .desc{font-size:14px;margin-bottom:18px;}
+
+  /* ---------- ABOUT ---------- */
+  .about-layout{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:64px;
+    align-items:start;
+  }
+  @media (max-width:860px){ .about-layout{grid-template-columns:1fr; gap:40px;} }
+
+  .about-text p{color:var(--ink-dim);font-size:16px;margin-bottom:18px;}
+  .about-text strong{color:var(--ink); font-weight:600;}
+
+  .stat-block{
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:24px;
+    margin-bottom:16px;
+  }
+  .stat-block .num{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:32px;
+    font-weight:700;
+    color:var(--accent);
+    margin-bottom:6px;
+  }
+  .stat-block .label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    color:var(--ink-faint);
+  }
+
+  /* ---------- SKILLS ---------- */
+  .skills-table{
+    border:1px solid var(--line);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .skills-row{
+    display:grid;
+    grid-template-columns:160px 1fr;
+    border-bottom:1px solid var(--line-soft);
+  }
+  .skills-row:last-child{border-bottom:none;}
+  .skills-row .cat{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    color:var(--ink-faint);
+    padding:22px 24px;
+    border-right:1px solid var(--line-soft);
+  }
+  .skills-row .items{
+    padding:22px 24px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px 24px;
+    font-size:15px;
+    color:var(--ink);
+  }
+  @media (max-width:600px){
+    .skills-row{grid-template-columns:1fr;}
+    .skills-row .cat{border-right:none; border-bottom:1px solid var(--line-soft); padding-bottom:10px;}
+  }
+
+  /* ---------- CONTACT ---------- */
+  .contact-section{text-align:left;}
+  .contact-section h2{
+    font-size:clamp(2rem, 4.5vw, 3.2rem);
+    max-width:680px;
+    margin-bottom:28px;
+  }
+  .contact-section .lead{
+    color:var(--ink-dim);
+    font-size:17px;
+    max-width:520px;
+    margin-bottom:44px;
+  }
+
+  .contact-links{
+    display:flex;
+    gap:32px;
+    flex-wrap:wrap;
+    font-family:'JetBrains Mono',monospace;
+    font-size:14px;
+  }
+  .contact-links a{
+    color:var(--ink-dim);
+    border-bottom:1px solid transparent;
+    padding-bottom:2px;
+    transition:color .2s ease, border-color .2s ease;
+  }
+  .contact-links a:hover{color:var(--accent); border-color:var(--accent);}
+
+  footer{
+    border-top:1px solid var(--line-soft);
+    padding:32px 0;
+  }
+  footer .wrap{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    color:var(--ink-faint);
+    flex-wrap:wrap;
+    gap:12px;
+  }
+
+  .todo-badge{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;
+    color:#E0883A;
+    background:rgba(224,136,58,0.1);
+    border:1px solid rgba(224,136,58,0.3);
+    padding:3px 8px;
+    border-radius:20px;
+    margin-left:8px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="#top" class="nav-mark">SACHIN.SINGH / DEV</a>
+    <div class="nav-links">
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#contact" class="nav-cta">Get in touch</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-grid-bg"></div>
+  <div class="wrap">
+    <div class="hero-content">
+      <div class="hero-eyebrow">AVAILABLE FOR FREELANCE WORK</div>
+      <h1>I build complete web applications — <span class="accent-text">frontend to database.</span></h1>
+      <p class="lead">Full-stack developer specializing in React interfaces backed by real systems: APIs, databases, authentication, and the logic that makes an app actually work — not just look like it does.</p>
+      <div class="hero-actions">
+        <a href="#work" class="btn-primary">View my work</a>
+        <a href="#contact" class="btn-secondary">Start a project</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-coords mono">
+    e4 — opening move<br>
+    full-stack / react / node / c++
+  </div>
+</header>
+
+<section id="work">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">d4 — selected work</div>
+      <h2>Things I've built end to end</h2>
+      <p>Each project below was built solo, from database schema to deployed interface. No templates, no page builders — real code solving a specific problem.</p>
+    </div>
+
+    <div class="project-card featured">
+      <div class="project-visual">
+        <div class="chess-board-mini" id="chessBoard"></div>
+      </div>
+      <div class="project-body">
+        <span class="project-tag">FEATURED — FULL-STACK</span>
+        <h3>Real-time Multiplayer Chess Platform</h3>
+        <p class="desc">A complete chess platform with live multiplayer matches and a custom AI opponent — built to solve two genuinely hard problems: keeping two players' boards in perfect sync in real time, and making a computer opponent that can actually think ahead.</p>
+
+        <div class="project-meta">
+          <div class="project-meta-row">
+            <span class="k">PROBLEM</span>
+            <span class="v">Real-time games need instant move sync and a credible, responsive AI — most beginner chess implementations have neither.</span>
+          </div>
+          <div class="project-meta-row">
+            <span class="k">APPROACH</span>
+            <span class="v">Built full game logic from scratch — legal move generation, check &amp; checkmate detection — then layered in live multiplayer via WebSockets and a custom Minimax engine in C++ using alpha-beta pruning, so the AI evaluates several moves ahead without lag.</span>
+          </div>
+        </div>
+
+        <div class="stack-pills">
+          <span class="stack-pill">React + Vite</span>
+          <span class="stack-pill">Python · FastAPI</span>
+          <span class="stack-pill">C++ Engine</span>
+          <span class="stack-pill">Socket.IO</span>
+          <span class="stack-pill">MongoDB</span>
+        </div>
+
+        <div class="project-links">
+          <a href="https://chess-three-rouge.vercel.app" target="_blank" rel="noopener" class="project-link primary">Live demo ↗</a>
+          <a href="https://github.com/sachin1199/chess" target="_blank" rel="noopener" class="project-link">View code ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-grid">
+      <div class="project-card small">
+        <span class="project-tag">AI / NLP</span>
+        <h3>AI Tutor — Study Assistant</h3>
+        <p class="desc">An NLP-powered study tool that summarizes content, answers questions, and auto-generates quizzes from any text, using an LLM backend.</p>
+        <div class="stack-pills">
+          <span class="stack-pill">FastAPI</span>
+          <span class="stack-pill">LLaMA 3.1</span>
+          <span class="stack-pill">React</span>
+        </div>
+        <div class="project-links">
+          <a href="#" class="project-link pending">View code <span class="todo-badge">add link</span></a>
+        </div>
+      </div>
+
+      <div class="project-card small">
+        <span class="project-tag">BACKEND</span>
+        <h3>Secure Employee REST API</h3>
+        <p class="desc">A JWT-authenticated REST API for employee management, with role-based access and a MongoDB data layer.</p>
+        <div class="stack-pills">
+          <span class="stack-pill">Spring Boot</span>
+          <span class="stack-pill">MongoDB</span>
+          <span class="stack-pill">JWT Auth</span>
+        </div>
+        <div class="project-links">
+          <a href="#" class="project-link pending">View code <span class="todo-badge">add link</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">c3 — about</div>
+      <h2>The short version</h2>
+    </div>
+    <div class="about-layout">
+      <div class="about-text">
+        <p>I'm <strong>Sachin Singh</strong>, a Data Science postgraduate student who builds full-stack web applications — not just interfaces, but the systems underneath them: APIs, databases, authentication, real-time logic.</p>
+        <p>I learn by building. Rather than working through theory first, I tend to start with a real problem — a multiplayer game that needs to sync instantly, an AI that needs to evaluate positions efficiently — and build toward a working solution, picking up the underlying concepts along the way.</p>
+        <p>That approach shows in the work: a chess engine using alpha-beta pruning to search game trees efficiently, a real-time sync layer for multiplayer, a JWT-secured API built around proper access control. These aren't tutorial projects — they're solutions to specific, hard problems.</p>
+        <p>I'm currently taking on freelance projects — landing pages, full-stack web apps, and everything in between.</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat-block">
+          <div class="num">3+</div>
+          <div class="label">FULL-STACK PROJECTS SHIPPED</div>
+        </div>
+        <div class="stat-block">
+          <div class="num">5</div>
+          <div class="label">CORE LANGUAGES — C++, JS, PYTHON, JAVA, SQL</div>
+        </div>
+        <div class="stat-block">
+          <div class="num">100%</div>
+          <div class="label">SOLO-BUILT, FRONTEND TO DATABASE</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">b2 — capabilities</div>
+      <h2>What I work with</h2>
+    </div>
+    <div class="skills-table">
+      <div class="skills-row">
+        <div class="cat">FRONTEND</div>
+        <div class="items">
+          <span>React</span><span>JavaScript (ES6+)</span><span>HTML5</span><span>CSS3</span><span>Vite</span><span>Redux</span>
+        </div>
+      </div>
+      <div class="skills-row">
+        <div class="cat">BACKEND</div>
+        <div class="items">
+          <span>Node.js</span><span>Express</span><span>FastAPI (Python)</span><span>Spring Boot (Java)</span>
+        </div>
+      </div>
+      <div class="skills-row">
+        <div class="cat">DATABASE</div>
+        <div class="items">
+          <span>MongoDB</span><span>SQL</span>
+        </div>
+      </div>
+      <div class="skills-row">
+        <div class="cat">CORE / CS</div>
+        <div class="items">
+          <span>C++</span><span>Data Structures &amp; Algorithms</span><span>Java</span>
+        </div>
+      </div>
+      <div class="skills-row">
+        <div class="cat">TOOLS</div>
+        <div class="items">
+          <span>Git &amp; GitHub</span><span>JWT Auth</span><span>Socket.IO</span><span>Linux</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact-section">
+  <div class="wrap">
+    <div class="section-label">a1 — contact</div>
+    <h2>Have a project in mind? Let's build it.</h2>
+    <p class="lead">Whether it's a landing page, a full web app, or something in between — I'd like to hear about it.</p>
+    <div class="contact-links">
+      <a href="mailto:sachinsingh94070@gmail.com">sachinsingh94070@gmail.com</a>
+      <a href="https://github.com/sachin1199" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/sachin-singh-179682372/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a href="#" class="pending">Fiverr <span class="todo-badge">add when ready</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Sachin Singh — <a href="mailto:sachinsingh94070@gmail.com" style="color:inherit;border-bottom:1px solid var(--line)">sachinsingh94070@gmail.com</a></span>
+    <span>Built with React-ready HTML, CSS, and intent.</span>
+  </div>
+</footer>
+
+<script>
+  // generate mini chessboard pattern (8x8 grid, visual texture only)
+  const board = document.getElementById('chessBoard');
+  for(let r=0;r<8;r++){
+    for(let c=0;c<8;c++){
+      const sq = document.createElement('div');
+      sq.className = (r+c)%2===0 ? 'light' : 'dark';
+      board.appendChild(sq);
+    }
+  }
+</script>
+
+</body>
+</html>
